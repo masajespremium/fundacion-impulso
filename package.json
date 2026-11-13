@@ -1,0 +1,16 @@
+{
+  "name": "fundacion-impulso-supabase",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "netlify dev",
+    "check": "node --check api-app.js && node --check server.js && node --check netlify/functions/api.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "serverless-http": "^3.2.0"
+  }
+}

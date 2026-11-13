@@ -1,0 +1,18 @@
+-- Ejecuta este script conectado como el usuario Oracle de la fundación.
+CREATE TABLE solicitudes (
+ id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+ codigo VARCHAR2(30) NOT NULL UNIQUE,
+ clave_hash VARCHAR2(64) NOT NULL,
+ datos_json CLOB NOT NULL,
+ estado VARCHAR2(20) DEFAULT 'EN PROCESO' NOT NULL,
+ creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+ CONSTRAINT ck_estado CHECK (estado IN ('EN PROCESO','APROBADA','RECHAZADA'))
+);
+CREATE TABLE documentos_solicitud (
+ id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+ solicitud_id NUMBER NOT NULL REFERENCES solicitudes(id),
+ campo VARCHAR2(60) NOT NULL,
+ nombre_original VARCHAR2(255) NOT NULL,
+ ruta_privada VARCHAR2(500) NOT NULL,
+ tipo VARCHAR2(100) NOT NULL
+);

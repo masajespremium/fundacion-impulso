@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solicitar ayuda | Fundación Impulso</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#101820;--surface:#1b2934;--ink:#f7f7f7;--muted:#c2cbd2;--line:#43515c;--accent:#e7ae3f;--accent-ink:#101820;--err:#ff9b9b;--soft:#34404a;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;padding:24px 16px 48px}
+.wrap{max-width:640px;margin:0 auto}
+.brand{font-weight:700;font-size:1rem;margin-bottom:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px 24px}
+#bar{display:flex;gap:6px;margin-bottom:8px}
+#bar i{flex:1;height:5px;border-radius:3px;background:var(--line)}
+#bar i.done{background:var(--accent)}
+#bar i.now{background:var(--ink)}
+#lbl{color:var(--muted);font-size:.9rem;margin:0 0 24px}
+h2{font-size:1.5rem;line-height:1.25;margin:0 0 6px;outline:none}
+.hint{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;gap:16px}
+.row2{grid-template-columns:1fr 1fr}
+@media(max-width:520px){.row2{grid-template-columns:1fr}.card{padding:22px 16px}}
+.field{border:0;margin:0;padding:0;min-width:0}
+.lbl{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px;padding:0}
+.sub{font-weight:400;color:var(--muted);font-size:.85rem}
+input[type=text],input[type=number],select,input[type=file]{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+input[type=file]{padding:8px}
+input[type=file]::file-selector-button{font:inherit;font-weight:600;margin-right:12px;padding:6px 12px;border:0;border-radius:6px;background:var(--soft);color:var(--ink);cursor:pointer}
+input:focus-visible,select:focus-visible,button:focus-visible,.opt:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:2px}
+.money{position:relative}
+.money span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.money input{padding-left:46px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--accent);background:var(--soft)}
+.opt input{accent-color:var(--accent);margin:0}
+.err{color:var(--err);font-size:.85rem;min-height:0;margin-top:4px}
+.err:empty{display:none}
+.bad input:not([type=radio]):not([type=checkbox]),.bad select{border-color:var(--err)}
+.cond{margin-top:20px;padding-top:20px;border-top:1px solid var(--line)}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:28px}
+button{font:inherit;font-weight:600;border-radius:8px;padding:11px 22px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);margin-left:auto}
+button:disabled{opacity:.6;cursor:wait}
+dl{margin:0;display:grid;gap:10px}
+dl div{display:grid;grid-template-columns:1fr 1.3fr;gap:12px;border-bottom:1px solid var(--line);padding-bottom:8px}
+dt{color:var(--muted);font-size:.9rem}
+dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.consent{margin-top:20px}
+#msg{color:var(--err);margin-top:12px}
+ .done-box{text-align:center;padding:24px 0}
+.brand a{color:#f7f7f7!important}.brand strong{color:var(--accent)}
+.intro{text-align:center;padding:20px 5px 30px}.intro h1{font-size:clamp(1.8rem,5vw,2.5rem);line-height:1.15;margin:14px 0;color:var(--ink)}
+.intro p{color:var(--muted);max-width:510px;margin:12px auto 24px}.intro .eyebrow{color:var(--accent);font-size:.8rem;letter-spacing:.15em;font-weight:700;text-transform:uppercase}
+.intro button{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);padding:13px 26px}
+.success-code{background:#101820;border:1px solid var(--line);padding:15px;border-radius:10px;margin:16px auto;max-width:420px;overflow-wrap:anywhere}
+.success-code strong{color:var(--accent)}.status-pill{display:inline-block;background:#4a3715;color:#ffd47b;padding:8px 18px;border-radius:30px;font-weight:700;letter-spacing:.05em}
+.done-box a{color:var(--accent)}
+
+/* Renovación visual del formulario: mantiene IDs, nombres y lógica original. */
+:root{--bg:#f3f6f9;--surface:#ffffff;--ink:#142338;--muted:#607086;--line:#dce4ec;--accent:#16755e;--accent-ink:#fff;--err:#bb3040;--soft:#e8f5ef;color-scheme:light}
+body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(ellipse at 15% 0%,#e2f1eb 0%,transparent 36%),radial-gradient(ellipse at 95% 0%,#e7eef8 0%,transparent 36%),#f5f7fa;color:var(--ink);padding:0 20px 64px;min-height:100vh}
+.wrap{max-width:850px;margin:0 auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 -6px 28px;padding:25px 6px 18px;border-bottom:1px solid #dce6eb;font-size:1rem}
+.brand a{color:#142338!important;font-family:Manrope,sans-serif;letter-spacing:-.025em;font-weight:800}.brand strong{color:#16755e}
+.brand::after{content:"PORTAL DE SOLICITUDES";font-size:.65rem;letter-spacing:.13em;color:#698176;font-weight:800}
+.card{position:relative;overflow:hidden;background:#fff;border:1px solid #e1e8ee;border-radius:22px;padding:40px 48px;box-shadow:0 18px 55px rgba(28,52,72,.075),0 2px 8px rgba(28,52,72,.025)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#12745b,#55b993,#d7e9e1)}
+.intro{text-align:left;padding:20px 2px 18px;max-width:660px}
+.intro .eyebrow{display:inline-flex;align-items:center;background:#e8f5ef;color:#14765b;padding:9px 13px;border-radius:99px;letter-spacing:.085em;font-size:.72rem}
+.intro h1{font-family:Manrope,sans-serif;font-size:clamp(2rem,5vw,3.15rem);font-weight:800;line-height:1.14;letter-spacing:-.055em;margin:25px 0 18px;color:#15283b}
+.intro p{margin:12px 0 18px;max-width:610px;font-size:1.02rem;line-height:1.8;color:#607086}
+.intro p strong{color:#213d4e}
+.intro button{margin-top:14px;background:#16755e;border-color:#16755e;color:white;border-radius:11px;padding:16px 26px;box-shadow:0 8px 16px rgba(22,117,94,.17)}
+.intro button:hover,.primary:hover{background:#0f604d;transform:translateY(-1px)}
+.intro::after{content:"7 pasos guiados  •  Guarda tu código de seguimiento al finalizar";display:block;margin-top:30px;color:#61798a;font-size:.81rem;border-top:1px solid #e7edf2;padding-top:22px}
+#bar{gap:7px;margin:2px 0 13px}
+#bar i{height:7px;border-radius:99px;background:#e6edf1;transition:background .2s}
+#bar i.done{background:#8ac7b3}#bar i.now{background:#16755e}
+#lbl{font-size:.8rem;font-weight:800;letter-spacing:.035em;color:#14765b;margin:0 0 30px;text-transform:uppercase}
+.step h2{font-family:Manrope,sans-serif;font-size:clamp(1.5rem,4vw,2rem);font-weight:800;letter-spacing:-.045em;color:#172b3c;margin-bottom:10px}
+.hint{font-size:.96rem;line-height:1.7;margin-bottom:28px;max-width:600px}
+.grid{gap:22px}.row2{gap:18px}
+.field{min-width:0}.lbl{font-size:.85rem;font-weight:800;color:#334b5c;margin-bottom:9px}
+input[type=text],input[type=number],select,input[type=file]{min-height:51px;background:#f9fbfc;border:1.5px solid #dce5eb;border-radius:11px;padding:12px 15px;color:#172b3c;transition:border-color .15s,box-shadow .15s,background .15s}
+input[type=text]:hover,input[type=number]:hover,select:hover,input[type=file]:hover{border-color:#aabec7}
+input[type=text]:focus,input[type=number]:focus,select:focus,input[type=file]:focus{border-color:#16755e;box-shadow:0 0 0 4px rgba(22,117,94,.1);background:#fff;outline:none}
+input[type=file]{padding:12px;background:#f8fbfa;border-style:dashed}
+input[type=file]::file-selector-button{background:#e4f2eb;color:#17684f;border-radius:7px;padding:9px 13px;margin-right:14px}
+.money span{left:15px;color:#537466;font-weight:700}.money input{padding-left:52px}
+.opts{gap:12px}.opt{background:#f9fbfc;border:1.5px solid #dce5eb;border-radius:11px;padding:14px 18px;font-weight:600;transition:background .15s,border-color .15s}
+.opt:has(input:checked){background:#e9f7f0;border-color:#16755e;color:#145a47}.opt input{accent-color:#16755e}
+.cond{background:#f9fbfc;border:1px solid #e5ecef;border-radius:14px;padding:22px;margin-top:23px}
+.nav{margin-top:38px;padding-top:25px;border-top:1px solid #e7edf2}
+button{min-height:49px;border-radius:11px;padding:12px 24px;border:1px solid #dce5eb;color:#30485a;transition:transform .15s,background .15s}
+button.primary{background:#16755e;color:white;border-color:#16755e;box-shadow:0 7px 15px rgba(22,117,94,.14)}
+.consent .opt{align-items:flex-start;line-height:1.6}
+#sum{border:1px solid #e1e8ee;border-radius:13px;padding:18px;background:#f9fbfc}dl div{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);padding:11px 0}
+.success-code{background:#eaf7f0;border:1px solid #b9e2ce}.success-code strong,.done-box a{color:#126f53}.status-pill{background:#fff4d7;color:#815d16}
+.done-box h2{font-family:Manrope,sans-serif}
+@media(max-width:650px){body{padding:0 13px 35px}.brand{margin:0 0 17px;padding:18px 2px;font-size:.9rem}.brand::after{font-size:.55rem;letter-spacing:.04em}.card{padding:30px 20px;border-radius:17px}.intro{padding:8px 0 10px}.intro h1{margin:19px 0 14px}.intro p{font-size:.94rem}.intro::after{line-height:1.7}.row2{grid-template-columns:1fr}.grid{gap:18px}.nav{gap:10px}.nav button{padding:12px 16px}.opts .opt{flex:1;min-width:110px}.cond{padding:15px}dl div{grid-template-columns:1fr;gap:4px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand" id="brand"><a href="index.html" style="color:inherit;text-decoration:none">Fundación <strong>Impulso</strong> · Volver al inicio</a></div>
+  <div class="card">
+    <div class="intro" id="intro">
+      <span class="eyebrow">Fundación Impulso · Solicitud de ayuda</span>
+      <h1>Bienvenido a Fundación Impulso</h1>
+      <p>Para solicitar apoyo, le invitamos a completar el siguiente formulario con información precisa y actualizada. Los datos y documentos proporcionados serán utilizados para evaluar su solicitud de manera confidencial.</p>
+      <p>Una vez enviada, su solicitud pasará a revisión. El tiempo estimado de evaluación es de <strong>12 a 24 horas</strong>.</p>
+      <button type="button" id="begin">Comenzar solicitud</button>
+    </div>
+    <div id="bar" hidden aria-hidden="true"></div>
+    <p id="lbl" aria-live="polite" hidden></p>
+
+    <form id="f" novalidate enctype="multipart/form-data" hidden>
+
+      <!-- 1 -->
+      <section class="step" data-title="Datos personales">
+        <h2 tabindex="-1">Datos personales</h2>
+        <p class="hint">Escribe tu nombre tal como aparece en tus documentos.</p>
+        <div class="grid">
+          <div class="field"><label class="lbl" for="nombre">Nombre completo</label><input type="text" id="nombre" name="nombre_completo" autocomplete="name" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="calle">Dirección</label><input type="text" id="calle" name="direccion" autocomplete="street-address" required><div class="err"></div></div>
+          <div class="grid row2">
+            <div class="field"><label class="lbl" for="ciudad">Ciudad</label><input type="text" id="ciudad" name="ciudad" autocomplete="address-level2" required><div class="err"></div></div>
+            <div class="field"><label class="lbl" for="estado">Estado o provincia</label><input type="text" id="estado" name="estado" autocomplete="address-level1" required><div class="err"></div></div>
+          </div>
+          <div class="field"><label class="lbl" for="cp">Código postal</label><input type="text" id="cp" name="codigo_postal" autocomplete="postal-code" required><div class="err"></div></div>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="step" data-title="Ingresos" hidden>
+        <h2 tabindex="-1">Tus ingresos</h2>
+        <p class="hint">Indica el total del último año completo, sin descontar impuestos.</p>
+        <div class="field"><label class="lbl" for="anual">Ingreso anual antes de impuestos</label>
+          <div class="money"><span>US$</span><input type="number" id="anual" name="ingreso_anual" min="0" step="0.01" inputmode="decimal" required></div><div class="err"></div></div>
+      </section>
+
+      <!-- 3 -->
+      <section class="step" data-title="Empleo" hidden>
+        <h2 tabindex="-1">Tu empleo</h2>
+        <p class="hint">Cuéntanos dónde trabajas y cómo te pagan.</p>
+        <div class="grid">
+          <div class="field"><label class="lbl" for="empresa">Nombre de la empresa donde trabajas</label><input type="text" id="empresa" name="empresa" autocomplete="organization" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="ocupacion">Ocupación en tu empresa</label><input type="text" id="ocupacion" name="ocupacion" autocomplete="organization-title" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="industria">Industria</label><input type="text" id="industria" name="industria" list="inds" required><div class="err"></div>
+            <datalist id="inds"><option value="Construcción"><option value="Salud"><option value="Educación"><option value="Comercio y ventas"><option value="Transporte y logística"><option value="Tecnología"><option value="Manufactura"><option value="Hotelería y turismo"><option value="Servicios financieros"><option value="Gobierno"></datalist></div>
+          <fieldset class="field"><legend class="lbl">Frecuencia de pago</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="frecuencia_pago" value="Semanal" required> Semanal</label>
+              <label class="opt"><input type="radio" name="frecuencia_pago" value="Quincenal"> Quincenal</label>
+              <label class="opt"><input type="radio" name="frecuencia_pago" value="Mensual"> Mensual</label>
+            </div><div class="err"></div></fieldset>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="step" data-title="Cónyuge" hidden>
+        <h2 tabindex="-1">Tu cónyuge</h2>
+        <p class="hint">Si tienes esposo o esposa que trabaja, necesitamos sus datos de empleo.</p>
+        <fieldset class="field"><legend class="lbl">¿Tienes cónyuge?</legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="tiene_conyuge" value="si" data-toggle="#conyuge" required> Sí</label>
+            <label class="opt"><input type="radio" name="tiene_conyuge" value="no" data-toggle="#conyuge"> No</label>
+          </div><div class="err"></div></fieldset>
+        <div id="conyuge" class="cond grid" hidden>
+          <div class="grid row2">
+            <div class="field"><label class="lbl" for="c_anio">Año en que empezó a trabajar</label><select id="c_anio" name="conyuge_anio_inicio" required></select><div class="err"></div></div>
+            <div class="field"><label class="lbl" for="c_mes">Mes en que empezó a trabajar</label><select id="c_mes" name="conyuge_mes_inicio" required></select><div class="err"></div></div>
+          </div>
+          <div class="grid row2">
+            <div class="field"><label class="lbl" for="c_mensual">Cobra al mes</label><div class="money"><span>US$</span><input type="number" id="c_mensual" name="conyuge_ingreso_mensual" min="0" step="0.01" inputmode="decimal" required></div><div class="err"></div></div>
+            <div class="field"><label class="lbl" for="c_anual">Cobra al año</label><div class="money"><span>US$</span><input type="number" id="c_anual" name="conyuge_ingreso_anual" min="0" step="0.01" inputmode="decimal" required></div><div class="err"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="step" data-title="Documentos de vivienda" hidden>
+        <h2 tabindex="-1">Documentos de vivienda e ingresos</h2>
+        <p class="hint">Sube fotos nítidas o PDF. Cada archivo debe pesar menos de 10 MB.</p>
+        <div class="grid">
+          <div class="field"><label class="lbl" for="d_hip">Declaración de hipoteca</label><input type="file" id="d_hip" name="declaracion_hipoteca" accept=".pdf,image/*" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="d_talon">Talón de pago</label><input type="file" id="d_talon" name="talon_pago" accept=".pdf,image/*" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="d_poliza">Póliza de seguro para propietarios de vivienda</label><input type="file" id="d_poliza" name="poliza_seguro" accept=".pdf,image/*" required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="d_w2">Formulario W-2</label><input type="file" id="d_w2" name="w2" accept=".pdf,image/*" required><div class="err"></div></div>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="step" data-title="Vehículo" hidden>
+        <h2 tabindex="-1">Tu vehículo</h2>
+        <p class="hint">Si tienes vehículo, adjunta fotos y sus documentos.</p>
+        <fieldset class="field"><legend class="lbl">¿Tienes vehículo?</legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="tiene_vehiculo" value="si" data-toggle="#vehiculo" required> Sí</label>
+            <label class="opt"><input type="radio" name="tiene_vehiculo" value="no" data-toggle="#vehiculo"> No</label>
+          </div><div class="err"></div></fieldset>
+        <div id="vehiculo" class="cond grid" hidden>
+          <div class="field"><label class="lbl" for="v_fotos">Fotos del vehículo <span class="sub">(puedes elegir varias)</span></label><input type="file" id="v_fotos" name="vehiculo_fotos" accept="image/*" multiple required><div class="err"></div></div>
+          <div class="field"><label class="lbl" for="v_docs">Documentos del vehículo <span class="sub">(puedes elegir varios)</span></label><input type="file" id="v_docs" name="vehiculo_documentos" accept=".pdf,image/*" multiple required><div class="err"></div></div>
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section class="step" data-title="Revisión" hidden>
+        <h2 tabindex="-1">Revisa tu solicitud</h2>
+        <p class="hint">Confirma que todo esté correcto antes de enviar.</p>
+        <dl id="sum"></dl>
+        <div class="field consent"><label class="opt"><input type="checkbox" id="ok" name="consentimiento" required> <span>Confirmo que la información es verdadera y autorizo a la fundación a usarla para evaluar mi solicitud.</span></label><div class="err"></div></div>
+        <div id="msg" role="alert"></div>
+      </section>
+
+      <div class="nav">
+        <button type="button" id="back">Atrás</button>
+        <button type="submit" id="next" class="primary">Continuar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Configuración: pon aquí la URL segura (HTTPS) de tu servidor que recibirá la solicitud.
+const ENDPOINT = "/api/solicitudes";
+const MAX = 10 * 1024 * 1024;
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const form = $("#f"), steps = $$(".step"), last = steps.length - 1;
+let cur = 0;
+
+// Años y meses del cónyuge
+const meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const y = new Date().getFullYear();
+$("#c_anio").innerHTML = '<option value="">Elige el año</option>' + Array.from({length: y - 1969}, (_, i) => `<option>${y - i}</option>`).join("");
+$("#c_mes").innerHTML = '<option value="">Elige el mes</option>' + meses.map(m => `<option>${m}</option>`).join("");
+
+// Mostrar u ocultar bloques según "Sí / No"
+$$("input[data-toggle]").forEach(r => r.addEventListener("change", () => {
+  $(r.dataset.toggle).hidden = form.elements[r.name].value !== "si";
+}));
+
+function show(i) {
+  cur = i;
+  steps.forEach((s, k) => s.hidden = k !== i);
+  $("#bar").innerHTML = steps.map((_, k) => `<i class="${k < i ? "done" : k === i ? "now" : ""}"></i>`).join("");
+  $("#lbl").textContent = `Paso ${i + 1} de ${steps.length}: ${steps[i].dataset.title}`;
+  $("#back").hidden = i === 0;
+  $("#next").textContent = i === last ? "Enviar solicitud" : "Continuar";
+  if (i === last) summary();
+  $("h2", steps[i]).focus();
+  window.scrollTo({top: 0});
+}
+
+function setErr(f, msg) {
+  $(".err", f).textContent = msg;
+  f.classList.toggle("bad", !!msg);
+}
+
+function valid() {
+  let ok = true, first = null;
+  $$(".field", steps[cur]).forEach(f => {
+    if (f.closest("[hidden]")) return;
+    const ins = $$("input,select", f), el = ins[0];
+    let msg = "";
+    if (el.type === "radio") { if (!ins.some(i => i.checked)) msg = "Elige una opción."; }
+    else if (el.type === "checkbox") { if (!el.checked) msg = "Debes aceptar para enviar."; }
+    else if (el.type === "file") {
+      const fs = [...el.files];
+      if (!fs.length) msg = "Adjunta el archivo.";
+      else if (fs.some(x => x.size > MAX)) msg = "Cada archivo debe pesar menos de 10 MB.";
+    }
+    else if (!el.value.trim()) msg = "Completa este campo.";
+    else if (el.type === "number" && +el.value < 0) msg = "Ingresa un monto válido.";
+    setErr(f, msg);
+    if (msg) { ok = false; first = first || el; }
+  });
+  if (first) first.focus();
+  return ok;
+}
+
+function summary() {
+  const dl = $("#sum");
+  dl.innerHTML = "";
+  steps.slice(0, last).forEach(s => $$(".field", s).forEach(f => {
+    if (f.closest("[hidden]")) return;
+    const el = $("input,select", f);
+    let v;
+    if (el.type === "radio") v = $$("input", f).find(i => i.checked)?.parentElement.textContent.trim();
+    else if (el.type === "file") v = [...el.files].map(x => x.name).join(", ");
+    else if (el.type === "number") v = "US$ " + Number(el.value).toLocaleString("es");
+    else v = el.value;
+    const row = document.createElement("div"), dt = document.createElement("dt"), dd = document.createElement("dd");
+    dt.textContent = $(".lbl", f).childNodes[0].textContent.trim();
+    dd.textContent = v || "";
+    row.append(dt, dd);
+    dl.append(row);
+  }));
+}
+
+$("#back").addEventListener("click", () => show(cur - 1));
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!valid()) return;
+  if (cur < last) return show(cur + 1);
+  const btn = $("#next"), msg = $("#msg");
+  btn.disabled = true; btn.textContent = "Enviando…"; msg.textContent = "";
+  try {
+    const fd = new FormData(form);
+    const archivos = [];
+    for (const [campo, archivo] of fd.entries()) if (archivo instanceof File && archivo.size > 0) {
+      if (!['application/pdf','image/jpeg','image/png'].includes(archivo.type)) throw Error('Solo se aceptan PDF, JPG y PNG.');
+      if (archivo.size > MAX) throw Error('Un documento supera los 10 MB.');
+      archivos.push({campo,nombre:archivo.name,tipo:archivo.type,size:archivo.size,archivo});
+    }
+    if (archivos.length > 12) throw Error('Máximo 12 archivos por solicitud.');
+    msg.textContent = 'Preparando subida segura de documentos…';
+    const prep = await fetch(ENDPOINT+'/preparar', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({files:archivos.map(({archivo,...meta})=>meta)})});
+    const plan = await prep.json();
+    if (!prep.ok) throw Error(plan.error || 'No se pudo preparar la subida');
+    for (let i=0;i<archivos.length;i++) {
+      msg.textContent = `Subiendo documento ${i+1} de ${archivos.length}…`;
+      const r = await fetch(plan.uploads[i].signedUrl,{method:'PUT',headers:{'Content-Type':archivos[i].tipo},body:archivos[i].archivo});
+      if (!r.ok) throw Error('No se pudo subir '+archivos[i].nombre+' (HTTP '+r.status+'). Comprueba la configuración de Storage.');
+    }
+    msg.textContent = 'Registrando solicitud…';
+    const datos = Object.fromEntries([...fd.entries()].filter(([,v])=>typeof v==='string'));
+    const res = await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ticket:plan.ticket,datos})});
+    const resultado = await res.json();
+    if (!res.ok) throw new Error(resultado.error || 'No se pudo registrar la solicitud');
+    resultado.codigo = plan.codigo; resultado.clave = plan.clave;
+    sessionStorage.setItem("impulso_consulta", resultado.codigo);
+    sessionStorage.setItem("impulso_clave", resultado.clave);
+    $(".card").innerHTML = `<div class="done-box"><h2 tabindex="-1">¡Solicitud recibida correctamente!</h2><p class="status-pill">EN PROCESO</p><p class="hint">Su solicitud se encuentra en revisión. El tiempo estimado es de <strong>12 a 24 horas</strong>.</p><p>Conserve estos datos para consultar el estado más adelante. No es necesario introducirlos antes de enviar la solicitud.</p><div class="success-code">Código de solicitud: <strong id="codigo-recibido"></strong><p>Clave de consulta: <strong id="clave-recibida"></strong></p></div><p><a href="estado.html">Consultar mi solicitud</a> · <a href="index.html">Volver al inicio</a></p></div>`;
+    document.getElementById("codigo-recibido").textContent = resultado.codigo;
+    document.getElementById("clave-recibida").textContent = resultado.clave;
+    $(".card h2").focus();
+  } catch (err) {
+    msg.textContent = "No pudimos guardar la solicitud. " + (err.message || "Revisa tu conexión e inténtalo de nuevo.");
+    btn.disabled = false; btn.textContent = "Enviar solicitud";
+  }
+});
+
+document.getElementById("begin").addEventListener("click", () => {
+  document.getElementById("intro").hidden = true;
+  document.getElementById("bar").hidden = false;
+  document.getElementById("lbl").hidden = false;
+  form.hidden = false;
+  show(0);
+});
+</script>
+</body>
+</html>
